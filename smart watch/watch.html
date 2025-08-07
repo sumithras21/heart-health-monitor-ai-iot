@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Health Monitor</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f9;
+      padding: 20px;
+    }
+    #status {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .safe { color: green; background-color: #e6ffe6; }
+    .warning { color: orange; background-color: #fff5e6; }
+    .danger { color: red; background-color: #ffe6e6; }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    canvas {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Heart Health Monitor</h1>
+  <p>Monitoring heart rate in real time</p>
+
+  <div id="status" class="safe">
+    Heart Rate: <span id="heart-rate">--</span> BPM - Status: Not Connected
+  </div>
+
+  <button id="connect-btn">Connect to Sensor</button>
+  <canvas id="hrChart"></canvas>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      let isConnected = false;
+      const heartRateElement = document.getElementById("heart-rate");
+      const statusElement = document.getElementById("status");
+
+      // Chart
+      const ctx = document.getElementById("hrChart").getContext("2d");
+      const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'Heart Rate (BPM)',
+            data: [],
+            backgroundColor: 'rgba(0, 123, 255, 0.6)',
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+
+      // UI updater
+      function updateHeartRate(heartRate) {
+        heartRateElement.textContent = heartRate;
+
+        if (heartRate < 60 || heartRate > 120) {
+          statusElement.textContent = `Heart Rate: ${heartRate} BPM - Status: Danger!`;
+          statusElement.className = "danger";
+        } else if (heartRate >= 90) {
+          statusElement.textContent = `Heart Rate: ${heartRate} BPM - Status: Elevated.`;
+          statusElement.className = "warning";
+        } else {
+          statusElement.textContent = `Heart Rate: ${heartRate} BPM - Status: Safe.`;
+          statusElement.className = "safe";
+        }
+
+        chart.data.labels.push(new Date().toLocaleTimeString());
+        chart.data.datasets[0].data.push(heartRate);
+        chart.update();
+      }
+
+      // Sensor connection
+      async function connectToSensor() {
+        if (isConnected) {
+          alert("Already connected.");
+          return;
+        }
+
+        try {
+          console.log("Requesting Bluetooth device...");
+          const device = await navigator.bluetooth.requestDevice({
+            filters: [{ services: ['heart_rate'] }],
+            optionalServices: ['battery_service']
+          });
+
+          console.log("Connecting to GATT Server...");
+          const server = await device.gatt.connect();
+          const service = await server.getPrimaryService('heart_rate');
+          const characteristic = await service.getCharacteristic('heart_rate_measurement');
+
+          characteristic.addEventListener('characteristicvaluechanged', (event) => {
+            const heartRate = parseHeartRate(event.target.value);
+            console.log("Heart rate:", heartRate);
+            updateHeartRate(heartRate);
+          });
+
+          await characteristic.startNotifications();
+          isConnected = true;
+          alert("Connected to heart rate sensor!");
+
+        } catch (err) {
+          console.error("Bluetooth error:", err);
+          alert("Bluetooth connection failed. Make sure your device supports GATT and try again.");
+        }
+      }
+
+      function parseHeartRate(value) {
+        const flags = value.getUint8(0);
+        const rate16Bits = flags & 0x01;
+        return rate16Bits ? value.getUint16(1, true) : value.getUint8(1);
+      }
+
+      // Trigger
+      document.getElementById("connect-btn").addEventListener("click", connectToSensor);
+    });
+  </script>
+
+</body>
+</html>
