@@ -1,35 +1,73 @@
-# heart-health-monitor-ai-iot
-Real-time heart rate monitoring interface using Web Bluetooth and Chart.js | Developed for HACKATHON-24 with AI + IoT integration for smart healthcare.
+# Heart Health Monitor – AI + IoT Hackathon Project   
 
-# Heart Health Monitor – AI + IoT Hackathon Project 💡
+Real-time heart rate monitoring interface using Web Bluetooth and Chart.js, developed for HACKATHON-24 with AI + IoT integration for smart healthcare.
 
-An AI-powered, real-time heart rate monitoring web interface developed for **HACKATHON-24**.  
-The system connects to Bluetooth-based heart rate sensors, visualizes BPM data in real time using **Chart.js**, and triggers alerts based on critical values.
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Hackathon](https://img.shields.io/badge/Hackathon-24-blue.svg)
+![IoT](https://img.shields.io/badge/IoT-Enabled-orange.svg)
 
-🏆 **Achievement**: Awarded a **Consolation Certificate** at HACKATHON-24 for innovation in healthcare monitoring through wearable technology.
+---
 
-## 🔧 Technologies Used:
-- HTML5, CSS3, JavaScript
-- Web Bluetooth API
-- Chart.js (for real-time BPM charting)
-- AI/IoT wearable hardware integration (sensor side)
+##  Achievement  
+Awarded a Consolation Certificate at HACKATHON-24 for innovation in healthcare monitoring using wearable technology.
 
-## 🚀 Key Features
-- Connects to real-time heart rate sensors via Bluetooth
-- Displays heart rate status as Safe / Elevated / Danger
-- Real-time bar chart for visual feedback
-- Lightweight and mobile-friendly UI
+---
 
-## 🛠️ Getting Started
+##  Technologies Used
+- Frontend: HTML5, CSS3, JavaScript  
+- APIs: Web Bluetooth API for real-time sensor connectivity  
+- Charts: Chart.js for dynamic heart rate visualization  
+- Hardware: Bluetooth-based heart rate sensors (e.g., Polar H7)  
 
-### Prerequisites
-- Bluetooth-enabled browser (like Chrome)
-- A compatible heart-rate sensor (e.g., Polar H7 or similar)
+---
 
-### Running Locally
-1. Clone the repository  
-   `git clone https://github.com/sumithras21/heart-health-monitor-ai-iot.git`
-2. Open `index.html` in your browser.
+##  Features
+-  Real-time connection to Bluetooth heart rate sensors  
+-  Displays heart rate status: **Safe / Elevated / Danger**  
+-  Dynamic bar chart visualization with **Chart.js**  
+-  Lightweight, mobile-friendly UI for healthcare applications  
 
-## 🤝 Contributing
-Contributions are welcome! If you'd like to improve the project, please fork it and submit a pull request.
+---
+
+##  Project Structure
+heart-health-monitor-ai-iot/
+│── index.html # Main web interface
+│── style.css # Styling (if separated)
+│── script.js # JavaScript logic for Bluetooth + Chart.js
+│── README.md # Project documentation
+
+yaml
+Copy code
+
+##  Getting Started  
+
+###  Prerequisites  
+- A Bluetooth-enabled browser (Google Chrome recommended)  
+- A compatible heart-rate sensor (e.g., Polar H7, Bluetooth HR monitors)  
+
+###  Running Locally  
+1. Clone the repository:  
+   
+   git clone https://github.com/sumithras21/heart-health-monitor-ai-iot.git
+   
+Open index.html in a Bluetooth-enabled browser.
+
+ Real-Time Visualization
+The system continuously updates the BPM chart with every new heart rate reading, labeling the status as:
+
+🟢 Safe → 60–89 BPM
+🟠 Elevated → 90–120 BPM
+🔴 Danger → <60 or >120 BPM
+
+ Contributing
+Contributions are welcome!
+
+Fork the repo
+Create a new branch
+Submit a pull request
+
+License
+This project is licensed under the MIT License.
+
+ Developed For
+HACKATHON-24 – AI + IoT Healthcare Innovation Challenge
